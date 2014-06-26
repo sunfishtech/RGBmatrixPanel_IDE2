@@ -1,7 +1,7 @@
 RGB Matrix Panel
 ================
 
-Arduino library for Adafruit [6x32](http://www.adafruit.com/products/420) and [32x32](http://www.adafruit.com/products/607) RGB LED matrix panels.
+Arduino library for Adafruit [16x32](http://www.adafruit.com/products/420) and [32x32](http://www.adafruit.com/products/607) RGB LED matrix panels.
 
 Spark Adaptation
 ---
