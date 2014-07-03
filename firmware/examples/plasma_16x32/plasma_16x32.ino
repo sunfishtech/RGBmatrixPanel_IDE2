@@ -9,7 +9,7 @@
 #define SPARK	1	// !!!!!!!!!!! TEMPORARY !!!!!!!!!
 
 #if defined(SPARK)
-#include "Adafruit_mfGFX/Adafruit_mfGFX.h"   // Core graphics library
+#include "/Adafruit_mfGFX/Adafruit_mfGFX.h"   // Core graphics library
 #include "RGBmatrixPanel.h" // Hardware-specific library
 #include "math.h"
 #else
