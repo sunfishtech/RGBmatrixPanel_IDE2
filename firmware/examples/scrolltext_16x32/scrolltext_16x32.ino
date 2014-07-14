@@ -23,6 +23,8 @@
  #define A   A0
  #define B   A1
  #define C   A2
+ 
+ #define pgm_read_word(addr) (*(const unsigned short *)(addr))
 #else
  #define CLK 8  // MUST be on PORTB! (Use pin 11 on Mega)
  #define LAT A3
@@ -84,7 +86,7 @@ void loop() {
   // Draw big scrolly text on top
   matrix.setTextColor(matrix.ColorHSV(hue, 255, 255, true));
   matrix.setCursor(textX, 1);
-  matrix.print(F2(str));
+  matrix.print(F(str));
 
   // Move text left (w/wrap), increase hue
   if((--textX) < textMin) textX = matrix.width();
