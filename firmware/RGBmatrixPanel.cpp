@@ -38,7 +38,7 @@ BSD license, all text above must be included in any redistribution.
 
 #include "RGBmatrixPanel.h"
 #include "gamma.h"
-#include "/SparkIntervalTimer/SparkIntervalTimer.h"
+#include "../SparkIntervalTimer/SparkIntervalTimer.h"
 
 // A full PORT register is required for the data lines, though only the
 // top 6 output bits are used.  For performance reasons, the port # cannot
