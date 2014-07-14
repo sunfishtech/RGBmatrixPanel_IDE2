@@ -1,7 +1,6 @@
-#define SPARK	1	// !!!!!!!!!!! TEMPORARY !!!!!!!!!
 
 #if defined(SPARK)
-#include "/Adafruit_mfGFX/Adafruit_mfGFX.h"
+#include "../Adafruit_mfGFX/Adafruit_mfGFX.h"
 #define pgm_read_byte(addr) (*(const uint8_t *)(addr))
 #define PROGMEM
 #else
