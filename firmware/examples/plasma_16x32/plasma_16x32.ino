@@ -20,7 +20,7 @@
 #if defined(SPARK)
  #define CLK D6
  #define OE  D7
- #define LAT A3
+ #define LAT A4
  #define A   A0
  #define B   A1
  #define C   A2
