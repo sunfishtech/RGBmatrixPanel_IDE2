@@ -1,7 +1,6 @@
 #ifndef _GAMMA_H_
 #define _GAMMA_H_
 
-#define SPARK	1	// !!!!!!!!!!! TEMPORARY !!!!!!!!!
 
 #if defined(SPARK)
 #include "application.h"
