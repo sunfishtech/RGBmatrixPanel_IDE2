@@ -11,8 +11,8 @@
 
 
 #if defined(SPARK)
-#include "../Adafruit_mfGFX/Adafruit_mfGFX.h"   // Core graphics library
-#include "RGBmatrixPanel.h" // Hardware-specific library
+#include "Adafruit_mfGFX/Adafruit_mfGFX.h"   // Core graphics library
+#include "RGBmatrixPanel/RGBmatrixPanel.h" // Hardware-specific library
 #include "math.h"
 #else
 #include <avr/pgmspace.h>
