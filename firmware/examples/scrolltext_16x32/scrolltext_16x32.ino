@@ -6,10 +6,8 @@
 // for Adafruit Industries.
 // BSD license, all text above must be included in any redistribution.
 
-#define SPARK	1	// !!!!!!!!!!! TEMPORARY !!!!!!!!!
-
 #if defined(SPARK)
-#include "Adafruit_mfGFX/Adafruit_mfGFX.h"   // Core graphics library
+#include "../Adafruit_mfGFX/Adafruit_mfGFX.h"   // Core graphics library
 #include "RGBmatrixPanel.h" // Hardware-specific library
 #include "math.h"
 #else
@@ -21,7 +19,7 @@
 #if defined(SPARK)
  #define CLK D6
  #define OE  D7
- #define LAT A3
+ #define LAT A4
  #define A   A0
  #define B   A1
  #define C   A2
