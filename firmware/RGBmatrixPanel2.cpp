@@ -38,7 +38,7 @@ BSD license, all text above must be included in any redistribution.
 getPixel and fronBuffer are from this fork: https://github.com/robf42/RGB-matrix-Panel
 */
 
-#include "RGBmatrixPanel.h"
+#include "RGBmatrixPanel2.h"
 #include "gamma.h"
 #include "../SparkIntervalTimer/SparkIntervalTimer.h"
 
