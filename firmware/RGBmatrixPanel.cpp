@@ -34,6 +34,8 @@ lower CPU utilization:
 Written by Limor Fried/Ladyada & Phil Burgess/PaintYourDragon for
 Adafruit Industries.
 BSD license, all text above must be included in any redistribution.
+
+getPixel and fronBuffer are from this fork: https://github.com/robf42/RGB-matrix-Panel
 */
 
 #include "RGBmatrixPanel.h"
@@ -399,6 +401,72 @@ void RGBmatrixPanel::drawPixel(int16_t x, int16_t y, uint16_t c) {
   }
 }
 
+
+uint16_t RGBmatrixPanel::getPixel(int16_t x, int16_t y) {
+  uint8_t r, g, b, bit, limit, *ptr;
+
+  if((x < 0) || (x >= _width) || (y < 0) || (y >= _height)) return 0;
+
+  switch(rotation) {
+   case 1:
+    swap(x, y);
+    x = WIDTH  - 1 - x;
+    break;
+   case 2:
+    x = WIDTH  - 1 - x;
+    y = HEIGHT - 1 - y;
+    break;
+   case 3:
+    swap(x, y);
+    y = HEIGHT - 1 - y;
+    break;
+  }
+
+  // Loop counter stuff
+  bit   = 2;
+  limit = 1 << nPlanes;
+
+  // This code was taken and reversed from drawPixel above.
+  // A bit easier, since we can start with zeros for r, g, and b.
+
+  r = g = b = 0;
+
+  if(y < nRows) {
+    // Data for the upper half of the display is stored in the lower
+    // bits of each byte.
+    ptr = &matrixbuff[1-backindex][y * WIDTH * (nPlanes - 1) + x]; // Base addr
+    // Plane 0 is a tricky case -- its data is spread about,
+    // stored in least two bits not used by the other planes.
+    if (ptr[64] & B00000001) r |= 1;   // Plane 0 R: 64 bytes ahead, bit 0
+    if (ptr[64] & B00000010) g |= 1;   // Plane 0 G: 64 bytes ahead, bit 1
+    if (ptr[32] & B00000001) b |= 1;   // Plane 0 B: 32 bytes ahead, bit 0
+    // The remaining three image planes are more normal-ish.
+    // Data is stored in the high 6 bits so it can be quickly
+    // copied to the DATAPORT register w/6 output lines.
+    for(; bit < limit; bit <<= 1) {
+      if (*ptr & B00000100) r |= bit;  // Plane N R: bit 2
+      if (*ptr & B00001000) g |= bit;  // Plane N G: bit 3
+      if (*ptr & B00010000) b |= bit;  // Plane N B: bit 4
+      ptr  += WIDTH;                   // Advance to next bit plane
+    }
+  } else {
+    // Data for the lower half of the display is stored in the upper
+    // bits, except for the plane 0 stuff, using 2 least bits.
+    ptr = &matrixbuff[1-backindex][(y - nRows) * WIDTH * (nPlanes - 1) + x];
+    if (ptr[32] & B00000010) r |= 1;   // Plane 0 R: 32 bytes ahead, bit 1
+    if (*ptr    & B00000001) g |= 1;   // Plane 0 G: bit 0
+    if (*ptr    & B00000010) b |= 1;   // Plane 0 B: bit 1
+    for(; bit < limit; bit <<= 1) {
+      if (*ptr & B00100000) r |= bit;  // Plane N R: bit 5
+      if (*ptr & B01000000) g |= bit;  // Plane N G: bit 6
+      if (*ptr & B10000000) b |= bit;  // Plane N B: bit 7
+      ptr  += WIDTH;                   // Advance to next bit plane
+    }
+  }
+
+  return Color444(r, g, b);;
+}
+
 void RGBmatrixPanel::fillScreen(uint16_t c) {
   if((c == 0x0000) || (c == 0xffff)) {
     // For black or white, all bits in frame buffer will be identically
@@ -414,6 +482,11 @@ void RGBmatrixPanel::fillScreen(uint16_t c) {
 // Return address of back buffer -- can then load/store data directly
 uint8_t *RGBmatrixPanel::backBuffer() {
   return matrixbuff[backindex];
+}
+
+// Return address of front buffer -- can then read display directly
+uint8_t *RGBmatrixPanel::frontBuffer() {
+  return matrixbuff[1-backindex];
 }
 
 // For smooth animation -- drawing always takes place in the "back" buffer;
